@@ -7,6 +7,7 @@ namespace StudentExerciseMVC.Models.ViewModels
 {
     public class StudentEditViewModel
     {
-
+        public Student Student { get; set; }
+        public List<Exercise> Exercises { get; set; }
     }
 }

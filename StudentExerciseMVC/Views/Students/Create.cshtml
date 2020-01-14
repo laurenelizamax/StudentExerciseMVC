@@ -28,7 +28,12 @@
                 <span asp-validation-for="Student.SlackHandle" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Student.CohortId" class="control-label"> Choose a Cohort</label>
                 <select asp-for="Student.CohortId" asp-items="@Model.Cohorts"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Student.ExerciseIds" class="control-label">Assign Exercises</label>
+                <select asp-for="Student.ExerciseIds" asp-items="@Model.Exercises" multiple></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
