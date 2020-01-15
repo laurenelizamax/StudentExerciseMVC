@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using StudentExerciseMVC.Models;
 using StudentExerciseMVC.Models.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
 
 namespace StudentExerciseMVC.Controllers
 {
@@ -100,7 +99,7 @@ namespace StudentExerciseMVC.Controllers
                             }
 
                         };
-
+                        // GetExercisesByStudentId private method to get all exercises for student details
                         student.Exercises = GetExercisesByStudentId(id);
 
                         reader.Close();
@@ -116,6 +115,7 @@ namespace StudentExerciseMVC.Controllers
         // GET: Students/Create
         public ActionResult Create()
         {
+
             var cohorts = GetCohorts().Select(c => new SelectListItem
             {
                 Text = c.CohortName,
@@ -161,12 +161,13 @@ namespace StudentExerciseMVC.Controllers
                         cmd.Parameters.Add(new SqlParameter("@slackHandle", student.SlackHandle));
                         cmd.Parameters.Add(new SqlParameter("@cohortId", student.CohortId));
 
+                        // stores the ouputed id
                         int newId = (int)cmd.ExecuteScalar();
                         student.Id = newId;
 
                     }
                 }
-
+                // Private Method to add exercises to a student
                 AddStudentExercises(student.Id, student.ExerciseIds);
 
                 return RedirectToAction(nameof(Index));
@@ -219,6 +220,7 @@ namespace StudentExerciseMVC.Controllers
 
                         reader.Close();
 
+                        // Shows new viewModel with Student object, Cohort, and exercises
                         var viewModel = new StudentViewModel
                         {
                             Student = student,
@@ -263,7 +265,8 @@ namespace StudentExerciseMVC.Controllers
                         cmd.ExecuteNonQuery();
                     }
                 }
-
+                
+                //Private Methods to edit a student's exercises
                 DeleteAssignedExercises(student.Id);
                 AddStudentExercises(student.Id, student.ExerciseIds);
                 return RedirectToAction(nameof(Index));
@@ -340,7 +343,7 @@ namespace StudentExerciseMVC.Controllers
             }
         }
 
-        // GET: Cohorts List
+        // GET: Private method to get a list of Cohorts
         private List<Cohort> GetCohorts()
         {
             using (SqlConnection conn = Connection)
@@ -371,7 +374,7 @@ namespace StudentExerciseMVC.Controllers
             }
         }
 
-        // GET: Exercises List
+        // GET: Private method to get a list of Exercises
         private List<Exercise> GetExercises()
         {
             using (SqlConnection conn = Connection)
@@ -405,7 +408,7 @@ namespace StudentExerciseMVC.Controllers
         }
 
 
-        // Add students to exercises
+        //CREATE: Private method to add xercises to a student
         private void AddStudentExercises(int StudentId, List<int> ExerciseIds)
         {
             using (SqlConnection conn = Connection)
@@ -428,7 +431,7 @@ namespace StudentExerciseMVC.Controllers
             }
         }
 
-        // delete studentExercises
+        // DELETE: Private delete function used in the edit 
         private void DeleteAssignedExercises(int StudentId)
         {
             using (SqlConnection conn = Connection)
@@ -445,7 +448,7 @@ namespace StudentExerciseMVC.Controllers
             }
         }
 
-        // Get all exercises by StudentId
+        //GET: Private method to get all exercises by StudentId
         private List<Exercise> GetExercisesByStudentId(int StudentId)
         {
             using (SqlConnection conn = Connection)

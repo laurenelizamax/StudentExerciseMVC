@@ -323,7 +323,7 @@ namespace StudentExerciseMVC.Controllers
             }
         }
 
-        // GET: Cohorts List
+        // GET: Private method to get a list of Cohorts 
         private List<Cohort> GetCohorts()
         {
             using (SqlConnection conn = Connection)
